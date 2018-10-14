@@ -17,6 +17,22 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="*.ca"/>
+                <data android:host="*.com"/>
+                <data android:host="*.org"/>
+                <data android:host="*.tv"/>
+                <data android:host="*.net"/>
+                <data android:pathPrefix="/rss/"/>
+                <data android:pathPattern="*.xml"/>
+                <data android:mimeType="text/rss"/>
+                <data android:mimeType="text/xml"/>
+            </intent-filter>
         </activity>
         <activity android:name=".ArticlesActivity" />
         <activity android:name=".DetailsActivity" />
