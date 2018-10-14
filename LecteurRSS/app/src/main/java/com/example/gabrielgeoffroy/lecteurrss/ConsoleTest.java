@@ -1,14 +1,14 @@
 package com.example.gabrielgeoffroy.lecteurrss;
 
-import android.util.Xml;
-
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
+/**
+ * @author Arnaud Bégin, Carelle Chagnon, Gabriel Geoffroy, David Poissant Samson
+ * Console permettant de tester les autres classes.
+ */
 public class ConsoleTest {
     static Lecteur lecteur = new Lecteur();
     static public String[] urls = {"https://ici.radio-canada.ca/rss/4159",
@@ -23,16 +23,10 @@ public class ConsoleTest {
 
     public static void main(String[] argv) throws XmlPullParserException {
         try {
-//            List<Article> articles = lecteur.separerTexte(lecteur.lireUrl(urls[0]));
-//            for (Article a:articles) {
-//                System.out.println(a);
-//            }
-            Chaine chaine = lecteur.separerInfoChaine(lecteur.lireUrl(urls[0]));
-            System.out.println(chaine.titre);
-            System.out.println(chaine.description);
-            System.out.println(chaine.lien);
-            System.out.println(chaine.urlImage);
-
+            List<Article> articles = lecteur.separerTexte(lecteur.lireUrl(urls[0]));
+            for (Article a:articles) {
+                System.out.println(a);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,25 +1,18 @@
 package com.example.gabrielgeoffroy.lecteurrss;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Xml;
 
 import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * @author Arnaud Bégin, Carelle Chagnon, Gabriel Geoffroy, David Poissant Samson
