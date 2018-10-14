@@ -18,11 +18,22 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+/**
+ * @author Arnaud Bégin, Carelle Chagnon, Gabriel Geoffroy, David Poissant Samson
+ * Classe permettant de faire afficher les chaines dans un layout custom
+ */
 public class FluxAdapter extends ArrayAdapter<Chaine> {
 
+    // Variables
     List<Chaine> chaines;
     Bitmap bitmap;
 
+    /**
+     * Constructeur de l'adapteur de chaine
+     * @param context Contexte de l'activité
+     * @param resource 0
+     * @param objects Liste de chaines
+     */
     public FluxAdapter(Context context, int resource, List<Chaine> objects) {
         super(context, resource, objects);
         this.chaines = objects;
@@ -35,11 +46,13 @@ public class FluxAdapter extends ArrayAdapter<Chaine> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.flux, parent, false);
         }
 
+        // Associations des composantes
         final ImageView image = convertView.findViewById(R.id.imageFlux);
         TextView titre = convertView.findViewById(R.id.titreFlux);
         TextView nbArticles = convertView.findViewById(R.id.articlesNonLus);
         ImageButton supprimer = convertView.findViewById(R.id.supprimerFlux);
 
+        // Rend l'image cliquable
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,6 +60,7 @@ public class FluxAdapter extends ArrayAdapter<Chaine> {
             }
         });
 
+        // Rend le titre cliquable
         titre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,6 +68,7 @@ public class FluxAdapter extends ArrayAdapter<Chaine> {
             }
         });
 
+        // Rend le nombre d'articles à lire cliquable
         nbArticles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +76,7 @@ public class FluxAdapter extends ArrayAdapter<Chaine> {
             }
         });
 
+        // Rend le bouton supprimer cliquable
         supprimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +88,7 @@ public class FluxAdapter extends ArrayAdapter<Chaine> {
         titre.setText(chaines.get(position).titre);
 //        nbArticles.setText(chaines.get(position));
 
+        // Afficher l'image de la chaine
         if(chaines.get(position).urlImage != null)
         {
             new Thread(new Runnable() {
@@ -86,14 +103,18 @@ public class FluxAdapter extends ArrayAdapter<Chaine> {
             }).start();
 
             if(bitmap != null)
-            {
                 image.setImageBitmap(bitmap);
-            }
         }
 
         return convertView;
     }
 
+    /**
+     * Méthode permettant de charger un image depuis son URL
+     * @param url L'URL de l'image
+     * @return L'image de la chaine
+     * @throws IOException
+     */
     private Bitmap getBitmapFromUrl(URL url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 

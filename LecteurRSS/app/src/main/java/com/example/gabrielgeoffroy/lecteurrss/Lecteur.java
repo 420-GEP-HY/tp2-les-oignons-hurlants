@@ -22,11 +22,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 /**
- * 1 - Une librairie permettant de lire des flux RSS et désérialiser les données dans un modèle
- objet de votre conception. Ce modèle doit être suffisamment complet pour contenir les
- données nécessaires à la suite du TP.
+ * @author Arnaud Bégin, Carelle Chagnon, Gabriel Geoffroy, David Poissant Samson
+ * Une librairie permettant de lire des flux RSS et désérialiser les données dans un modèle objet de votre conception.
  */
 public class Lecteur {
+
     //region Variables
     public String[] urls = {"https://ici.radio-canada.ca/rss/",
             "http://www.lapresse.ca/rss.php",
@@ -40,6 +40,13 @@ public class Lecteur {
     //endregion
 
     //region Méthodes
+
+    /**
+     * Méthode permettant de lire le contenu d'une page en passant par son URL.
+     * @param urlString URL de la page à lire
+     * @return Le contenu de la page
+     * @throws IOException
+     */
     public InputStream lireUrl(String urlString) throws IOException {
         DocumentBuilder builder;
         Document dom = null;
@@ -49,6 +56,13 @@ public class Lecteur {
         return inputStream;
     }
 
+    /**
+     * Méthode permettant de séparer le contenu d'une page par ses balises.
+     * @param inputStream Le contenu de la page
+     * @return La liste des items contenus dans la page
+     * @throws XmlPullParserException
+     * @throws IOException
+     */
     public List<Article> separerTexte(InputStream inputStream) throws XmlPullParserException, IOException {
         String titre = "";
         String link = "";
@@ -116,6 +130,13 @@ public class Lecteur {
         return articles;
     }
 
+    /**
+     * Méthode permettant de recueillir les informations d'une chaine (flux)
+     * @param inputStream Le contenu de la page
+     * @return La chaine (flux)
+     * @throws XmlPullParserException
+     * @throws IOException
+     */
     public Chaine separerInfoChaine(InputStream inputStream) throws XmlPullParserException, IOException {
 
         Chaine chaine = new Chaine();
@@ -172,7 +193,7 @@ public class Lecteur {
                         if(url != null) {
                             chaine = new Chaine(titre, link, description, url);
                         } else
-                            chaine = new Chaine(titre, link, description);
+                            chaine = new Chaine(titre, link, description, null);
                     }
                 }
             }
@@ -183,17 +204,6 @@ public class Lecteur {
         }
 
         return chaine;
-    }
-
-    private Bitmap getBitmapFromUrl(URL url) throws IOException {
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-        connection.setDoInput(true);
-        connection.connect();
-
-        InputStream input = connection.getInputStream();
-
-        return BitmapFactory.decodeStream(input);
     }
     //endregion
 }

@@ -16,12 +16,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Arnaud Bégin, Carelle Chagnon, Gabriel Geoffroy, David Poissant Samson
+ * Activité permettant d'afficher les chaines (flux), d'en ajouter et d'en supprimer.
+ */
 public class FluxActivity extends AppCompatActivity {
 
+    // Variables
     Lecteur lecteur = new Lecteur();
-
     List<Chaine> flux =  new ArrayList<Chaine>();
-
     ArrayList<Chaine> chaines;
     ListView listView;
     ImageButton ajouter;
@@ -33,6 +36,7 @@ public class FluxActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flux);
 
+        // Association des composantes
         listView = this.findViewById(R.id.listeFlux);
         ajouter = this.findViewById(R.id.ajouter);
         supprimer = this.findViewById(R.id.supprimerFlux);
@@ -40,10 +44,12 @@ public class FluxActivity extends AppCompatActivity {
 
         chaines = new ArrayList<Chaine>();
 
+        // Ajout des chaines dans l'ArrayList
         for (Chaine chaine:flux){
             chaines.add(new Chaine(chaine.titre, chaine.lien, chaine.description, chaine.urlImage));
         }
 
+        // Permet d'afficher les chaines dans le layout
         ArrayAdapter<Chaine> aa = new FluxAdapter(this, 0, chaines);
         listView.setAdapter(aa);
 
@@ -58,12 +64,14 @@ public class FluxActivity extends AppCompatActivity {
                     mettreAJourVue();
                 }
                 else {
+                    // Créer une nouvelle activité (afficher les articles)
                     Intent articles = new Intent(getApplicationContext(), ArticlesActivity.class);
                     startActivity(articles);
                 }
             }
         });
 
+        // Permet d'ajouter et d'afficher un flux
         ajouter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,6 +100,9 @@ public class FluxActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Méthode permettant de mettre à jour la vue
+     */
     private void mettreAJourVue()
     {
         chaines.clear();

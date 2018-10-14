@@ -5,7 +5,8 @@ import android.graphics.Bitmap;
 import java.util.List;
 
 /**
- *
+ *@author Arnaud Bégin, Carelle Chagnon, Gabriel Geoffroy, David Poissant Samson
+ * Classe permettant de contenir les informations d'un flux RSS.
  */
 public class Chaine {
     //region Variables
@@ -16,20 +17,20 @@ public class Chaine {
     public Bitmap image;
     public List<Article> articles;
 
+    /**
+     * Constructeur de base
+     */
     public Chaine() {
 
     }
 
-    public Chaine(String titre){
-        this.titre = titre;
-    }
-
-    public Chaine(String titre, String lien, String description){
-        this.titre = titre;
-        this.lien = lien;
-        this.description = description;
-    }
-
+    /**
+     * Constructeur de chaine avec ses informations.
+     * @param titre Le titre de la chaine
+     * @param lien L'URL de la chaine
+     * @param description Le description de la chaine
+     * @param image L'URL de l'image de la chaine
+     */
     public Chaine(String titre, String lien, String description, String image){
         this.titre = titre;
         this.lien = lien;
