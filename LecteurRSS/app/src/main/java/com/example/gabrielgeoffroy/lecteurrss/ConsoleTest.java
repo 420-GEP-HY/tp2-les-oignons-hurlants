@@ -23,10 +23,16 @@ public class ConsoleTest {
 
     public static void main(String[] argv) throws XmlPullParserException {
         try {
-            List<Article> articles = lecteur.separerTexte(lecteur.lireUrl(urls[0]));
-            for (Article a:articles) {
-                System.out.println(a);
-            }
+//            List<Article> articles = lecteur.separerTexte(lecteur.lireUrl(urls[0]));
+//            for (Article a:articles) {
+//                System.out.println(a);
+//            }
+            Chaine chaine = lecteur.separerInfoChaine(lecteur.lireUrl(urls[0]));
+            System.out.println(chaine.titre);
+            System.out.println(chaine.description);
+            System.out.println(chaine.lien);
+            System.out.println(chaine.urlImage);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
