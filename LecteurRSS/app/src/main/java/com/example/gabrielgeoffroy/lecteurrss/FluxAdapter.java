@@ -39,6 +39,28 @@ public class FluxAdapter extends ArrayAdapter<Chaine> {
         TextView titre = convertView.findViewById(R.id.titreFlux);
         TextView nbArticles = convertView.findViewById(R.id.articlesNonLus);
         ImageButton supprimer = convertView.findViewById(R.id.supprimerFlux);
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ListView)parent).performItemClick(v, position, 0);
+            }
+        });
+
+        titre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ListView)parent).performItemClick(v, position, 0);
+            }
+        });
+
+        nbArticles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ListView)parent).performItemClick(v, position, 0);
+            }
+        });
+
         supprimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

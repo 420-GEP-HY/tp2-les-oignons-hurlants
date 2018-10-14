@@ -1,5 +1,6 @@
 package com.example.gabrielgeoffroy.lecteurrss;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -55,6 +56,10 @@ public class FluxActivity extends AppCompatActivity {
                 {
                     flux.remove(position);
                     mettreAJourVue();
+                }
+                else {
+                    Intent articles = new Intent(getApplicationContext(), ArticlesActivity.class);
+                    startActivity(articles);
                 }
             }
         });
