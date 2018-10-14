@@ -4,10 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -15,13 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
-/**
- *
- */
-public class MainActivity extends AppCompatActivity {
+public class ArticlesActivity extends AppCompatActivity {
+
     ListView listView;
     DocumentBuilder builder;
     Document dom;
@@ -44,29 +38,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listView = this.findViewById(R.id.listeFlux);
+        listView = this.findViewById(R.id.listeArticles);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                    try {
-                        articles = lecteur.separerTexte(lecteur.lireUrl(urls[0]));
-                        MainActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                List<String> titles = new ArrayList<>();
-                                for (Article a: articles) {
-                                    titles.add(a.titre);
-                                }
-                                ArrayAdapter<String> aa = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, titles);
-                                listView.setAdapter(aa);
+                try {
+                    articles = lecteur.separerTexte(lecteur.lireUrl(urls[0]));
+                    ArticlesActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            List<String> titles = new ArrayList<>();
+                            for (Article a : articles) {
+                                titles.add(a.titre);
                             }
-                        });
-                    } catch (XmlPullParserException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                            ArrayAdapter<String> aa = new ArrayAdapter<String>(ArticlesActivity.this, android.R.layout.simple_list_item_1, titles);
+                            listView.setAdapter(aa);
+                        }
+                    });
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
     }
