@@ -3,6 +3,7 @@ package com.example.gabrielgeoffroy.lecteurrss;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -18,14 +19,12 @@ public class FluxActivity extends AppCompatActivity {
 
     Lecteur lecteur = new Lecteur();
 
-    // Test (À MODIFIER)
-//    Chaine test = new Chaine("test");
-
     List<Chaine> flux =  new ArrayList<Chaine>();
 
     ArrayList<Chaine> chaines;
     ListView listView;
     ImageButton ajouter;
+    ImageButton supprimer;
     EditText lien;
 
     @Override
@@ -33,10 +32,9 @@ public class FluxActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flux);
 
-//        flux.add(test);
-
         listView = this.findViewById(R.id.listeFlux);
         ajouter = this.findViewById(R.id.ajouter);
+        supprimer = this.findViewById(R.id.supprimerFlux);
         lien = this.findViewById(R.id.lienHTTP);
 
         chaines = new ArrayList<Chaine>();
@@ -47,6 +45,19 @@ public class FluxActivity extends AppCompatActivity {
 
         ArrayAdapter<Chaine> aa = new FluxAdapter(this, 0, chaines);
         listView.setAdapter(aa);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                // Supprimer un flux
+                if(view.getId() == R.id.supprimerFlux)
+                {
+                    flux.remove(position);
+                    mettreAJourVue();
+                }
+            }
+        });
 
         ajouter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,13 +72,7 @@ public class FluxActivity extends AppCompatActivity {
                                     FluxActivity.this.runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            chaines.clear();
-                                            for (Chaine chaine : flux) {
-                                                chaines.add(new Chaine(chaine.titre, chaine.lien, chaine.description, chaine.urlImage));
-                                            }
-
-                                            ArrayAdapter<Chaine> aa = new FluxAdapter(FluxActivity.this, 0, chaines);
-                                            listView.setAdapter(aa);
+                                            mettreAJourVue();
                                         }
                                     });
                                 } catch (XmlPullParserException e) {
@@ -80,5 +85,16 @@ public class FluxActivity extends AppCompatActivity {
                     }
             }
         });
+    }
+
+    private void mettreAJourVue()
+    {
+        chaines.clear();
+        for (Chaine chaine : flux) {
+            chaines.add(new Chaine(chaine.titre, chaine.lien, chaine.description, chaine.urlImage));
+        }
+
+        ArrayAdapter<Chaine> aa = new FluxAdapter(FluxActivity.this, 0, chaines);
+        listView.setAdapter(aa);
     }
 }

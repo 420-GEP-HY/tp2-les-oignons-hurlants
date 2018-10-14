@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class FluxAdapter extends ArrayAdapter<Chaine> {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
 
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.flux, parent, false);
@@ -38,10 +39,16 @@ public class FluxAdapter extends ArrayAdapter<Chaine> {
         TextView titre = convertView.findViewById(R.id.titreFlux);
         TextView nbArticles = convertView.findViewById(R.id.articlesNonLus);
         ImageButton supprimer = convertView.findViewById(R.id.supprimerFlux);
+        supprimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ListView)parent).performItemClick(v, position, 0);
+            }
+        });
 
         // AJOUTER LES AUTRES INFORMATIONS À AJOUTER
         titre.setText(chaines.get(position).titre);
-        nbArticles.setText(chaines.get(position).urlImage);
+//        nbArticles.setText(chaines.get(position));
 
         if(chaines.get(position).urlImage != null)
         {
