@@ -1,5 +1,7 @@
 package com.example.gabrielgeoffroy.lecteurrss;
 
+import java.util.ArrayList;
+import java.util.List;
 import android.util.Xml;
 
 import org.w3c.dom.Document;
@@ -25,7 +27,7 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 public class Lecteur {
     //region Variables
-    public String[] urls = {"https://ici.radio-canada.ca/rss/",
+    public String[] urls = {"https://ici.radio-canada.ca/rss",
             "http://www.lapresse.ca/rss.php",
             "http://rss.slashdot.org/Slashdot/slashdotMain",
             "https://www.commentcamarche.net/rss/",
@@ -36,7 +38,6 @@ public class Lecteur {
             "http://visualstudiotalkshow.libsyn.com/rss"};
     //endregion
 
-    //region Méthodes
     public InputStream lireUrl(String urlString) throws IOException {
         DocumentBuilder builder;
         Document dom = null;
