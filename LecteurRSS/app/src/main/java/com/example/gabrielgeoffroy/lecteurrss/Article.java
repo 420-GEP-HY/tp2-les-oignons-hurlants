@@ -13,12 +13,16 @@ public class Article implements Parcelable {
     public String description;
     public String pubDate;
     public String link;
+    public String mediaLink;
+    public String mediaType;
     public String guid;
 
-    public Article(String titre, String description, String link) {
+    public Article(String titre, String description, String link, String mediaLink, String mediaType) {
         this.titre = titre;
         this.description = description;
         this.link = link;
+        this.mediaLink = mediaLink;
+        this.mediaType = mediaType;
     }
 
     protected Article(Parcel in) {
@@ -26,6 +30,8 @@ public class Article implements Parcelable {
         description = in.readString();
         pubDate = in.readString();
         link = in.readString();
+        mediaLink = in.readString();
+        mediaType = in.readString();
         guid = in.readString();
     }
 
@@ -51,6 +57,8 @@ public class Article implements Parcelable {
             dest.writeString(titre);
             dest.writeString(description);
             dest.writeString(link);
+            dest.writeString(mediaLink);
+            dest.writeString(mediaType);
     }
     //endregion
 

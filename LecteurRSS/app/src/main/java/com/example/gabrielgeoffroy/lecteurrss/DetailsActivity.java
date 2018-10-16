@@ -3,8 +3,10 @@ package com.example.gabrielgeoffroy.lecteurrss;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -39,29 +41,43 @@ public class DetailsActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Lecteur lecteur = new Lecteur();
+                        switch(a.mediaType){
+                            case "audio":
+                                contenuSonore.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        contenuSonore.setEnabled(false);
+                                        MediaPlayer mPlayer = new MediaPlayer();
+                                        mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                                        try{
+                                            mPlayer.setDataSource(a.mediaLink);
+                                            mPlayer.prepare();
+                                            mPlayer.start();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
 
-                        try {
-                            InputStream is = lecteur.lireUrl(a.link);
-                            String mimeType = URLConnection.guessContentTypeFromStream(is);
-                            mimeType = mimeType.substring(0, mimeType.indexOf('/'));
-                            switch(mimeType){
-                                case "audio":
-                                    MediaPlayer mediaPlayer = new MediaPlayer();
-                                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                                    mediaPlayer.setDataSource(a.link);
-                                    mediaPlayer.prepare();
-                                    mediaPlayer.start();
-                                    break;
-                                case "video":
-                                    break;
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                                        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                            @Override
+                                            public void onCompletion(MediaPlayer mp) {
+                                                contenuSonore.setEnabled(true);
+                                            }
+                                        });
+                                    }
+                                });
+                                contenuSonore.setVisibility(View.VISIBLE);
+                                break;
+                            case "video":
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setDataAndType(Uri.parse(a.mediaLink), "video/*");
+                                startActivity(intent);
+                                break;
                         }
                     }
                 }).run();
             }
         }
     }
+
+
 }
