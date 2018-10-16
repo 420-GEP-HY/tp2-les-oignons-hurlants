@@ -29,13 +29,14 @@ public class DetailsActivity extends AppCompatActivity {
         contenuSonore = findViewById(R.id.contenuSonore);
         contenuVideo = findViewById(R.id.contenuVideo);
 
+        //Va chercher article dans les extras du intent
         Intent intent = getIntent();
-        final Article a = new Article("test", "test", "test", "http://www.podtrac.com/pts/redirect.mp4/cdn.twit.tv/video/sn/sn0684/sn0684_h264m_1280x720_1872.mp4", "video"); //intent.getParcelableExtra("article");
+        final Article a = intent.getParcelableExtra("article"); //new Article("test", "test", "test", "http://www.podtrac.com/pts/redirect.mp4/cdn.twit.tv/video/sn/sn0684/sn0684_h264m_1280x720_1872.mp4", "video");
 
         if (a != null){
             titre.setText(a.titre);
             contenuTexte.setText(a.description);
-            if (a.link != null && a.link != ""){
+            if (a.mediaLink != null && a.mediaLink != "" && a.mediaType != null && a.mediaType != ""){
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -75,6 +76,8 @@ public class DetailsActivity extends AppCompatActivity {
                                     }
                                 });
                                 contenuVideo.setVisibility(View.VISIBLE);
+                                break;
+                            default:
                                 break;
                         }
                     }

@@ -11,25 +11,21 @@ public class Article implements Parcelable {
     //region Variables
     public String titre;
     public String description;
-    public String pubDate;
-    public String link;
     public String mediaLink;
     public String mediaType;
     public String guid;
 
-    public Article(String titre, String description, String link, String mediaLink, String mediaType) {
+    public Article(String titre, String description, String mediaLink, String mediaType, String guid) {
         this.titre = titre;
         this.description = description;
-        this.link = link;
         this.mediaLink = mediaLink;
         this.mediaType = mediaType;
+        this.guid = guid;
     }
 
     protected Article(Parcel in) {
         titre = in.readString();
         description = in.readString();
-        pubDate = in.readString();
-        link = in.readString();
         mediaLink = in.readString();
         mediaType = in.readString();
         guid = in.readString();
@@ -56,9 +52,9 @@ public class Article implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(titre);
             dest.writeString(description);
-            dest.writeString(link);
             dest.writeString(mediaLink);
             dest.writeString(mediaType);
+            dest.writeString(guid);
     }
     //endregion
 
