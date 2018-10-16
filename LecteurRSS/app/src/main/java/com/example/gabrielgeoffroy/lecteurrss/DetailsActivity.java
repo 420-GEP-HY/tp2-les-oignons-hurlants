@@ -11,8 +11,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URLConnection;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -32,7 +30,7 @@ public class DetailsActivity extends AppCompatActivity {
         contenuVideo = findViewById(R.id.contenuVideo);
 
         Intent intent = getIntent();
-        final Article a = intent.getParcelableExtra("article");
+        final Article a = new Article("test", "test", "test", "http://www.podtrac.com/pts/redirect.mp4/cdn.twit.tv/video/sn/sn0684/sn0684_h264m_1280x720_1872.mp4", "video"); //intent.getParcelableExtra("article");
 
         if (a != null){
             titre.setText(a.titre);
@@ -68,9 +66,15 @@ public class DetailsActivity extends AppCompatActivity {
                                 contenuSonore.setVisibility(View.VISIBLE);
                                 break;
                             case "video":
-                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                intent.setDataAndType(Uri.parse(a.mediaLink), "video/*");
-                                startActivity(intent);
+                                contenuVideo.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                                        intent.setDataAndType(Uri.parse(a.mediaLink), "video/*");
+                                        startActivity(intent);
+                                    }
+                                });
+                                contenuVideo.setVisibility(View.VISIBLE);
                                 break;
                         }
                     }
