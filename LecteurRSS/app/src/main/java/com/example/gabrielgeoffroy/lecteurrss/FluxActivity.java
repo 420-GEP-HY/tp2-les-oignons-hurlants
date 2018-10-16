@@ -83,6 +83,9 @@ public class FluxActivity extends AppCompatActivity {
                 else {
                     // Créer une nouvelle activité (afficher les articles)
                     Intent articles = new Intent(getApplicationContext(), ArticlesActivity.class);
+                    List<Article>  list = flux.get(position).articles;
+                    ArrayList<Article> list2 = new ArrayList<>(list);
+                    articles.putParcelableArrayListExtra("articles",list2);
                     startActivity(articles);
                 }
             }
@@ -103,7 +106,7 @@ public class FluxActivity extends AppCompatActivity {
                                     c.articles = lecteur.separerInfoArticle(lecteur.lireUrl(lien.getText().toString()));
 
                                     flux.add(c);
-                                    le.Ecriture("Save.bin", getApplicationContext(), flux);
+                                    //le.Ecriture("Save.bin", getApplicationContext(), flux);
                                     FluxActivity.this.runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
