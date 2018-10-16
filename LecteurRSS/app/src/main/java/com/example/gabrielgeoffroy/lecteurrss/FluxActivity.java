@@ -30,6 +30,7 @@ public class FluxActivity extends AppCompatActivity {
     ImageButton ajouter;
     ImageButton supprimer;
     EditText lien;
+    LectureEcriture le;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +42,17 @@ public class FluxActivity extends AppCompatActivity {
         ajouter = this.findViewById(R.id.ajouter);
         supprimer = this.findViewById(R.id.supprimerFlux);
         lien = this.findViewById(R.id.lienHTTP);
+        le = new LectureEcriture();
 
         chaines = new ArrayList<Chaine>();
+
+        try {
+            flux = le.Lecture("Save.bin", getApplicationContext());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
         // Ajout des chaines dans l'ArrayList
         for (Chaine chaine:flux){
@@ -61,6 +71,13 @@ public class FluxActivity extends AppCompatActivity {
                 if(view.getId() == R.id.supprimerFlux)
                 {
                     flux.remove(position);
+                    try {
+                        le.Ecriture("Save.bin", getApplicationContext(), flux);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     mettreAJourVue();
                 }
                 else {
@@ -77,6 +94,7 @@ public class FluxActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(lien.getText() != null)
                 {
+                    int i = flux.size();
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -85,6 +103,7 @@ public class FluxActivity extends AppCompatActivity {
                                     c.articles = lecteur.separerInfoArticle(lecteur.lireUrl(lien.getText().toString()));
 
                                     flux.add(c);
+                                    le.Ecriture("Save.bin", getApplicationContext(), flux);
                                     FluxActivity.this.runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -93,7 +112,7 @@ public class FluxActivity extends AppCompatActivity {
                                     });
                                 } catch (Exception e) {
                                     e.printStackTrace();
-                                }
+                            }
                             }
                         }).start();
                     }

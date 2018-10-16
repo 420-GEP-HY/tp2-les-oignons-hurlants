@@ -3,13 +3,14 @@ package com.example.gabrielgeoffroy.lecteurrss;
 import android.graphics.Bitmap;
 
 import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *@author Arnaud Bégin, Carelle Chagnon, Gabriel Geoffroy, David Poissant Samson
  * Classe permettant de contenir les informations d'un flux RSS.
  */
-public class Chaine {
+public class Chaine implements Serializable{
     //region Variables
     public String titre;
     public String description;
@@ -44,6 +45,7 @@ public class Chaine {
             this.articles = articles;
         }
     }
+
     //endregion
 
     //region Méthodes

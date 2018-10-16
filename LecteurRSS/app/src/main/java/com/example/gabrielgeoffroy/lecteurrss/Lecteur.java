@@ -55,10 +55,10 @@ public class Lecteur {
      */
     public List<Article> separerInfoArticle(InputStream inputStream) throws IOException {
         String titre = "";
-        String link = "";
         String description = "";
-        String pubDate = "";
         String guid = "";
+        String mediaLink = "";
+        String mediaType = "";
         boolean isItem = false;
         List<Article> articles = new ArrayList<>();
 
@@ -96,27 +96,24 @@ public class Lecteur {
                 }
                 if (name.equalsIgnoreCase("title")) {
                     titre = result;
-                } else if (name.equalsIgnoreCase("link")) {
-                    link = result;
-                } else if (name.equalsIgnoreCase("description")) {
+                }else if (name.equalsIgnoreCase("description")) {
                     description = result;
                 } else if (name.equalsIgnoreCase("guid")){
                     guid = result;
-                }else if (name.equalsIgnoreCase("pubDate")){
-                    pubDate = result;
+                }else if (name.equalsIgnoreCase("media:content")){
+                    mediaLink = parser.getAttributeValue(null, "url");
+                    mediaType = parser.getAttributeValue(null, "type");
                 }
 
-                if (titre != null && link != null && description != null) {
+                if (titre != null && description != null) {
                     if (isItem) {
-                        Article item = new Article(titre, link, description,guid,pubDate);
+                        Article item = new Article(titre,description, mediaLink, mediaType, guid);
                         articles.add(item);
                     }
 
                     titre = null;
-                    link = null;
                     description = null;
                     guid = null;
-                    pubDate = null;
                     isItem = false;
                 }
             }
