@@ -54,4 +54,37 @@ public class LectureEcriture {
         oi.close();
         return  Ch;
     }
+
+    /**
+     * Écrit la liste d'articles lus dans un fichier du storage local
+     * @param NomFichier Le nom du fichier
+     * @param context Le contexte de l'application
+     * @param a La liste des GUID
+     * @throws IOException
+     * @author Arnaud Bégin
+     */
+    public void EcrireArticlesLusString(String NomFichier, Context context,  List<String> a) throws IOException{
+        FileOutputStream fos = context.openFileOutput( NomFichier, Context.MODE_PRIVATE );
+        ObjectOutputStream od = new ObjectOutputStream( fos );
+        od.writeObject(a);
+        od.close();
+    }
+
+    /**
+     * Lit la liste d'articles lus dans le fichier du storage local
+     * @param NomFichier Le nom du fichier
+     * @param context Le contexte de l'application
+     * @return La liste d'articles lus
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @author Arnaud Bégin
+     */
+    public List<String> LireArticlesLus(String NomFichier, Context context) throws IOException, ClassNotFoundException {
+
+        FileInputStream fis = context.openFileInput( NomFichier );
+        ObjectInputStream oi = new ObjectInputStream( fis );
+        List<String> guids =  (List<String>)oi.readObject();
+        oi.close();
+        return guids;
+    }
 }

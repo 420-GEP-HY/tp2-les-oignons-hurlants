@@ -38,6 +38,7 @@ public class Chaine implements Serializable{
         this.description = description;
         this.urlImage = image;
     }
+
     //endregion
 
     //region Méthodes
