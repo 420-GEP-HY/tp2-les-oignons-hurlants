@@ -115,7 +115,7 @@ public class FluxAdapter extends ArrayAdapter<Chaine> {
      * @return L'image de la chaine
      * @throws IOException
      */
-    private Bitmap getBitmapFromUrl(URL url) throws IOException {
+    protected Bitmap getBitmapFromUrl(URL url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         connection.setDoInput(true);
