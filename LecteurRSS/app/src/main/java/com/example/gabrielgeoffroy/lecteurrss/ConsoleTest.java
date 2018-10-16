@@ -23,9 +23,9 @@ public class ConsoleTest {
 
     public static void main(String[] argv) throws XmlPullParserException {
         try {
-            List<Article> articles = lecteur.separerTexte(lecteur.lireUrl(urls[0]));
+            List<Article> articles = lecteur.separerInfoArticle(lecteur.lireUrl(urls[0]));
             for (Article a:articles) {
-                System.out.println(a);
+                System.out.println(a.titre);
             }
         } catch (IOException e) {
             e.printStackTrace();

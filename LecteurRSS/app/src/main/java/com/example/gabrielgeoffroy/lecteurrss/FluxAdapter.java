@@ -86,9 +86,16 @@ public class FluxAdapter extends ArrayAdapter<Chaine> {
 
         // AJOUTER LES AUTRES INFORMATIONS À AJOUTER
         titre.setText(chaines.get(position).titre);
-//        nbArticles.setText(chaines.get(position));
 
-        // Afficher l'image de la chaine
+        if (chaines.get(position).articles.isEmpty())
+        {
+            nbArticles.setText("Aucun article non lu.");
+        }
+        else{
+            nbArticles.setText(Integer.toString(chaines.get(position).articles.size()));
+        }
+
+        //Afficher l'image de la chaine
         if(chaines.get(position).urlImage != null)
         {
             new Thread(new Runnable() {

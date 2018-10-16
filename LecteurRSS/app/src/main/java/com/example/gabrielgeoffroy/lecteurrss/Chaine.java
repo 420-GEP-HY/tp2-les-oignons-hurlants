@@ -2,6 +2,7 @@ package com.example.gabrielgeoffroy.lecteurrss;
 
 import android.graphics.Bitmap;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,11 +32,17 @@ public class Chaine {
      * @param description Le description de la chaine
      * @param image L'URL de l'image de la chaine
      */
-    public Chaine(String titre, String lien, String description, String image){
+    public Chaine(String titre, String lien, String description, String image, List<Article> articles){
         this.titre = titre;
         this.lien = lien;
         this.description = description;
         this.urlImage = image;
+        if (articles == null){
+            this.articles = new ArrayList<Article>();
+        }
+        else{
+            this.articles = articles;
+        }
     }
     //endregion
 

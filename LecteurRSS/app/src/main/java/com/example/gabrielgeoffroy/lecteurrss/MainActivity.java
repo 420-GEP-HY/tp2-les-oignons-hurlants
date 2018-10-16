@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                     try {
-                        articles = lecteur.separerTexte(lecteur.lireUrl(urls[0]));
+                        articles = lecteur.separerInfoArticle(lecteur.lireUrl(urls[0]));
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -58,9 +58,7 @@ public class MainActivity extends AppCompatActivity {
                                 listView.setAdapter(aa);
                             }
                         });
-                    } catch (XmlPullParserException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
             }

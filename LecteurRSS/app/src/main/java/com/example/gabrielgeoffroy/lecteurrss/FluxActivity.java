@@ -46,7 +46,7 @@ public class FluxActivity extends AppCompatActivity {
 
         // Ajout des chaines dans l'ArrayList
         for (Chaine chaine:flux){
-            chaines.add(new Chaine(chaine.titre, chaine.lien, chaine.description, chaine.urlImage));
+            chaines.add(new Chaine(chaine.titre, chaine.lien, chaine.description, chaine.urlImage, chaine.articles));
         }
 
         // Permet d'afficher les chaines dans le layout
@@ -81,16 +81,17 @@ public class FluxActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 try {
-                                    flux.add(lecteur.separerInfoChaine(lecteur.lireUrl(lien.getText().toString())));
+                                    Chaine c = lecteur.separerInfoChaine(lecteur.lireUrl(lien.getText().toString()));
+                                    c.articles = lecteur.separerInfoArticle(lecteur.lireUrl(lien.getText().toString()));
+
+                                    flux.add(c);
                                     FluxActivity.this.runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
                                             mettreAJourVue();
                                         }
                                     });
-                                } catch (XmlPullParserException e) {
-                                    e.printStackTrace();
-                                } catch (IOException e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -107,7 +108,7 @@ public class FluxActivity extends AppCompatActivity {
     {
         chaines.clear();
         for (Chaine chaine : flux) {
-            chaines.add(new Chaine(chaine.titre, chaine.lien, chaine.description, chaine.urlImage));
+            chaines.add(new Chaine(chaine.titre, chaine.lien, chaine.description, chaine.urlImage, chaine.articles));
         }
 
         ArrayAdapter<Chaine> aa = new FluxAdapter(FluxActivity.this, 0, chaines);

@@ -19,11 +19,13 @@ public class Article {
      * @param description La description de l'article
      * @param link Le lien de l'article
      */
-    public Article(String titre, String description, String link) {
+    public Article(String titre, String description, String link, String guid, String pubDate) {
         this.titre = titre;
         this.description = description;
         this.link = link;
     }
+
+    public Article(){};
     //endregion
 
     //region Méthodes

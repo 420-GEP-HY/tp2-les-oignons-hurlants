@@ -6,6 +6,7 @@ import org.w3c.dom.Document;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -21,7 +22,7 @@ import javax.xml.parsers.DocumentBuilder;
 public class Lecteur {
 
     //region Variables
-    public String[] urls = {"https://ici.radio-canada.ca/rss/",
+    public String[] urls = {"https://ici.radio-canada.ca/rss/4179",
             "http://www.lapresse.ca/rss.php",
             "http://rss.slashdot.org/Slashdot/slashdotMain",
             "https://www.commentcamarche.net/rss/",
@@ -41,9 +42,6 @@ public class Lecteur {
      * @throws IOException
      */
     public InputStream lireUrl(String urlString) throws IOException {
-        DocumentBuilder builder;
-        Document dom = null;
-
         URL url = new URL(urlString);
         InputStream inputStream = url.openConnection().getInputStream();
         return inputStream;
@@ -53,13 +51,14 @@ public class Lecteur {
      * Méthode permettant de séparer le contenu d'une page par ses balises.
      * @param inputStream Le contenu de la page
      * @return La liste des items contenus dans la page
-     * @throws XmlPullParserException
      * @throws IOException
      */
-    public List<Article> separerTexte(InputStream inputStream) throws XmlPullParserException, IOException {
+    public List<Article> separerInfoArticle(InputStream inputStream) throws IOException {
         String titre = "";
         String link = "";
         String description = "";
+        String pubDate = "";
+        String guid = "";
         boolean isItem = false;
         List<Article> articles = new ArrayList<>();
 
@@ -67,6 +66,7 @@ public class Lecteur {
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             parser.setInput(inputStream, null);
+
             parser.nextTag();
             while (parser.next() != XmlPullParser.END_DOCUMENT) {
                 int eventType = parser.getEventType();
@@ -94,30 +94,36 @@ public class Lecteur {
                     result = parser.getText();
                     parser.nextTag();
                 }
-
                 if (name.equalsIgnoreCase("title")) {
                     titre = result;
                 } else if (name.equalsIgnoreCase("link")) {
                     link = result;
                 } else if (name.equalsIgnoreCase("description")) {
                     description = result;
+                } else if (name.equalsIgnoreCase("guid")){
+                    guid = result;
+                }else if (name.equalsIgnoreCase("pubDate")){
+                    pubDate = result;
                 }
 
                 if (titre != null && link != null && description != null) {
                     if (isItem) {
-                        Article item = new Article(titre, link, description);
+                        Article item = new Article(titre, link, description,guid,pubDate);
                         articles.add(item);
                     }
 
                     titre = null;
                     link = null;
                     description = null;
+                    guid = null;
+                    pubDate = null;
                     isItem = false;
                 }
             }
         } catch (Exception e) {
             System.out.println(e);
-        } finally {
+        }
+        finally {
             inputStream.close();
         }
         return articles;
@@ -127,67 +133,73 @@ public class Lecteur {
      * Méthode permettant de recueillir les informations d'une chaine (flux)
      * @param inputStream Le contenu de la page
      * @return La chaine (flux)
-     * @throws XmlPullParserException
      * @throws IOException
      */
-    public Chaine separerInfoChaine(InputStream inputStream) throws XmlPullParserException, IOException {
-
+    public Chaine separerInfoChaine(InputStream inputStream) throws IOException {
+        //Nouvelle chaine à utiliser
         Chaine chaine = new Chaine();
-
+        //attribut de la chaîne à utiliser.
         String titre = "";
         String link = "";
         String description = "";
-        String url = "";
-
+        String urlDeImage = "";
+        List<Article> list = new ArrayList<Article>();
+        //Les checks
         boolean isItem = false;
-
         try {
+            //Initialiser la lecture de la page
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             parser.setInput(inputStream, null);
-            parser.nextTag();
+            //Changer de tag.
+            //parser.nextTag();
+            //Tant que le prochain morceau du document n'est pas la fin.
             while (parser.next() != XmlPullParser.END_DOCUMENT) {
+                //Prendre l'event type
                 int eventType = parser.getEventType();
-
+                //Prendre le nom du tag courrant.
                 String name = parser.getName();
+                //Si le tag est vide, il est malformé, retourner au début (skip)
                 if (name == null)
                     continue;
 
+                //Est ce que le tag présent est un début d'objet.
                 if (eventType == XmlPullParser.END_TAG) {
                     if (name.equalsIgnoreCase("image")) {
-                        isItem = false;
+                        isItem = true;
                     }
                     continue;
                 }
 
                 if (eventType == XmlPullParser.START_TAG) {
                     if (name.equalsIgnoreCase("channel")) {
-                        isItem = true;
+                        isItem = false;
                         continue;
                     }
                 }
 
+                //Chaine
                 String result = "";
                 if (parser.next() == XmlPullParser.TEXT) {
                     result = parser.getText();
                     parser.nextTag();
                 }
 
-                if (name.equalsIgnoreCase("title")) {
+                if (name.equalsIgnoreCase("title") && isItem == false) {
                     titre = result;
-                } else if (name.equalsIgnoreCase("description")) {
+                } else if (name.equalsIgnoreCase("description") && isItem == false) {
                     description = result;
-                }else if (name.equalsIgnoreCase("url")) {
-                    url = result;
+                }else if (name.equalsIgnoreCase("url") &&  isItem == false) {
+                    urlDeImage = result;
+                }else if (name.equalsIgnoreCase("link" ) && isItem == false){
+                    link = result;
                 }
 
-                if (titre != null && description != null) {
-                    if (isItem) {
-                        if(url != null) {
-                            chaine = new Chaine(titre, link, description, url);
-                        } else
-                            chaine = new Chaine(titre, link, description, null);
-                    }
+                if (titre != "" && description != "") {
+                    chaine.titre = titre;
+                    chaine.description = description;
+                    chaine.urlImage = urlDeImage;
+                    chaine.lien =  link;
                 }
             }
         } catch (Exception e) {
@@ -198,5 +210,8 @@ public class Lecteur {
 
         return chaine;
     }
+
+
+
     //endregion
 }
