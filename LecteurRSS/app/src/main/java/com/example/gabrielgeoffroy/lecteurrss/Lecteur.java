@@ -60,6 +60,8 @@ public class Lecteur {
         String titre = "";
         String link = "";
         String description = "";
+        String mediaLink = "";
+        String mediaType = "";
         boolean isItem = false;
         List<Article> articles = new ArrayList<>();
 
@@ -101,11 +103,14 @@ public class Lecteur {
                     link = result;
                 } else if (name.equalsIgnoreCase("description")) {
                     description = result;
+                } else if (name.equalsIgnoreCase("media:content")){
+                    mediaLink = parser.getAttributeValue(null, "url");
+                    mediaType = parser.getAttributeValue(null, "type");
                 }
 
                 if (titre != null && link != null && description != null) {
                     if (isItem) {
-                        Article item = new Article(titre, link, description);
+                        Article item = new Article(titre, link, description, mediaLink, mediaType);
                         articles.add(item);
                     }
 
